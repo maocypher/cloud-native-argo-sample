@@ -1,0 +1,81 @@
+# minimal-vault-values.yaml (Production with Storage)
+global:
+  enabled: true
+
+server:
+  # Single replica (minimal but production-ready)
+  replicas: 1
+  
+  # DISABLE dev mode for production
+  dev:
+    enabled: false
+  
+  # Disable HA mode (single replica)
+  ha:
+    enabled: false
+    replicas: 1
+  
+  # ENABLE data storage (production requirement)
+  dataStorage:
+    enabled: true
+    size: 1Gi
+    storageClass: null  # Use default storage class
+    accessMode: ReadWriteOnce
+  
+  # Enable audit storage for production
+  auditStorage:
+    enabled: true
+    size: 500Mi
+    storageClass: null
+    accessMode: ReadWriteOnce
+  
+  # Minimal but adequate resources
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  
+  # Production-ready configuration
+  standalone:
+    enabled: true
+    config: |
+      ui = true
+      
+      listener "tcp" {
+        tls_disable = 1
+        address = "[::]:8200"
+        cluster_address = "[::]:8201"
+      }
+      
+      storage "file" {
+        path = "/vault/data"
+      }
+      
+      # Example configuration for cloud storage (uncomment as needed)
+      # storage "s3" {
+      #   access_key = "AKIAIOSFODNN7EXAMPLE"
+      #   secret_key = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+      #   bucket = "my-vault-bucket"
+      #   region = "us-west-2"
+      # }
+
+# Enable UI for management
+ui:
+  enabled: true
+  serviceType: "ClusterIP"
+
+# Disable injector (not needed for minimal setup)
+injector:
+  enabled: false
+  
+# Disable CSI provider (not needed for minimal setup)
+csi:
+  enabled: false
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 8200
