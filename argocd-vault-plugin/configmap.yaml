@@ -16,10 +16,11 @@ data:
           command:
             - sh
             - "-c"
-            - "find . -name '*.yaml' | xargs -I {} grep -l '<path:\\|avp\\.kubernetes\\.io/' {} || true"
+            - "find . -name '*.yaml' | xargs -I {} grep \"<path\\|avp\\.kubernetes\\.io\" {} | grep ."
       generate:
         command:
           - argocd-vault-plugin
           - generate
           - "."
       lockRepo: false
+---
