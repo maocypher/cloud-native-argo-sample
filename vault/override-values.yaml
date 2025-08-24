@@ -65,7 +65,7 @@ server:
 # Enable UI for management
 ui:
   enabled: true
-  serviceType: "ClusterIP"
+  serviceType: "LoadBalancer"
 
 # Disable injector (not needed for minimal setup)
 injector:

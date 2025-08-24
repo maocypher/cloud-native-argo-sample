@@ -4,7 +4,7 @@ metadata:
   name: vault
   namespace: argocd
 spec:
-  project: default
+  project: cloud-native-sample
   source:
     # Your Git repo containing values
     repoURL: https://github.com/maocypher/cloud-native-argo-sample
