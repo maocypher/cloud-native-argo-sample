@@ -10,14 +10,20 @@ spec:
     path: redis
     repoURL: https://github.com/maocypher/cloud-native-argo-sample.git
     targetRevision: HEAD
+    plugin:
+      name: argocd-vault-plugin
   sources: []
   project: cloud-native-sample
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
     retry:
-      limit: 5
+      limit: 2
       backoff:
         duration: 5s
         maxDuration: 3m0s
         factor: 2
+    automated:
+      prune: false
+      selfHeal: true
+      enabled: true
