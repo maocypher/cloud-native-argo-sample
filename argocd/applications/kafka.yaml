@@ -1,0 +1,77 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kafka
+spec:
+  destination:
+    namespace: kafka
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 32.4.2
+    chart: kafka
+    helm:
+      values: |-
+        controller:
+          replicaCount: 1
+          persistence:
+            enabled: false
+
+        auth:
+          enabled: false
+          clientProtocol: plaintext
+          interBrokerProtocol: plaintext
+          sasl:
+            enabled: false
+          tls:
+            enabled: false
+
+        listeners:
+          client:
+            protocol: PLAINTEXT
+            port: 9092  # internal client port
+          external:
+            protocol: PLAINTEXT
+            port: 9094  # external client port
+          controller:
+            protocol: PLAINTEXT
+            port: 9095  # controller port
+          interbroker:
+            protocol: PLAINTEXT
+            port: 9093  # inter-broker communication
+          advertisedListeners: ""
+
+        externalAccess:
+          enabled: true
+          broker:
+            service:
+              type: LoadBalancer
+              ports:
+                external: 9094
+              loadBalancerIPs:
+                '192.168.178.33'
+          controller:
+            service:
+              type: LoadBalancer
+              loadBalancerIPs:
+                - '192.168.178.33'
+              nodePorts:
+                - 32232
+              ports:
+                external: 9094
+  sources: []
+  project: cloud-native-sample
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+      enabled: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 2
+      backoff:
+        duration: 5s
+        maxDuration: 3m0s
+        factor: 2

@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kafka-ui
+spec:
+  destination:
+    namespace: kafka
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: https://provectus.github.io/kafka-ui-charts
+    targetRevision: 0.7.6
+    chart: kafka-ui
+    helm:
+      values: |-
+        yamlApplicationConfig:
+          kafka:
+            clusters:
+              - name: yaml
+                bootstrapServers: kafka.kafka:9092
+          auth:
+            type: disabled
+          management:
+            health:
+              ldap:
+                enabled: false
+
+        service:
+          type: LoadBalancer
+  sources: []
+  project: cloud-native-sample
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+      enabled: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 2
+      backoff:
+        duration: 5s
+        maxDuration: 3m0s
+        factor: 2
