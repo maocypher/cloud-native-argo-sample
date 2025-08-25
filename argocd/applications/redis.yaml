@@ -10,8 +10,6 @@ spec:
     path: redis
     repoURL: https://github.com/maocypher/cloud-native-argo-sample.git
     targetRevision: HEAD
-    plugin:
-      name: argocd-vault-plugin
   sources: []
   project: cloud-native-sample
   syncPolicy:
