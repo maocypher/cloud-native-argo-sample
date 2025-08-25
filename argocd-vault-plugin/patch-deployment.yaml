@@ -66,6 +66,3 @@ spec:
           - name: custom-tools
             subPath: argocd-vault-plugin
             mountPath: /usr/local/bin/argocd-vault-plugin
-          - name: avp-secret-volume
-            secret:
-              secretName: avp-secret
