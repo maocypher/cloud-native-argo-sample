@@ -1,0 +1,5 @@
+apache_kafka:
+  ip_address: <your-ip-address>
+  port: <your-port>
+  topic: homeassistant
+
