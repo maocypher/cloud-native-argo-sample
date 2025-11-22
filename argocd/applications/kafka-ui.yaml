@@ -4,7 +4,7 @@ metadata:
   name: kafka-ui
 spec:
   destination:
-    namespace: kafka
+    namespace: kafka-2025-11
     server: https://kubernetes.default.svc
   source:
     path: ''
@@ -17,7 +17,7 @@ spec:
           kafka:
             clusters:
               - name: yaml
-                bootstrapServers: kafka.kafka:9092
+                bootstrapServers: kafka-service.kafka-2025-11:9092
           auth:
             type: disabled
           management:
